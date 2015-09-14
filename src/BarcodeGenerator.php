@@ -45,6 +45,8 @@ class BarcodeGenerator
             $this->orientation = strtolower($orientation);
             $this->codeType = strtolower($codeType);
         }
+
+        return $this;
     }
 
     /**
