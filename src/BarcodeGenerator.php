@@ -38,7 +38,7 @@ class BarcodeGenerator
         $this->image = new ImageManager();
 
         if (is_array($text)) {
-            $this->initFromArray($text);
+            $this->initFromArray($text, $size, $orientation, $codeType);
         } else {
             $this->text = $text;
             $this->size = $size;
@@ -52,13 +52,16 @@ class BarcodeGenerator
     /**
      * Try to grab all required params from passed array.
      * @param array $data
+     * @param $size
+     * @param $orientation
+     * @param $codeType
      */
-    protected function initFromArray(array $data)
+    protected function initFromArray(array $data, $size, $orientation, $codeType)
     {
-        $this->text = $this->extract(0, 'text', $data);
-        $this->size = $this->extract(1, 'size', $data);
-        $this->orientation = strtolower($this->extract(2, 'orientation', $data));
-        $this->codeType = strtolower($this->extract(3, 'codeType', $data));
+        $this->text = $this->extract(0, 'text', '', $data);
+        $this->size = $this->extract(1, 'size', $size, $data);
+        $this->orientation = strtolower($this->extract(2, 'orientation', $orientation, $data));
+        $this->codeType = strtolower($this->extract(3, 'codeType', $codeType, $data));
     }
 
     /**
@@ -67,11 +70,11 @@ class BarcodeGenerator
      *
      * @param int $intKey
      * @param string $textKey
+     * @param $default
      * @param array $data
      * @return mixed
-     * @throws \Exception
      */
-    protected function extract($intKey, $textKey, array $data)
+    protected function extract($intKey, $textKey, $default, array $data)
     {
         if (isset($data[$intKey])) {
             return $data[$intKey];
@@ -79,7 +82,7 @@ class BarcodeGenerator
             return $data[$textKey];
         }
 
-        throw new Exception('Incorrect parameters!');
+        return $default;
     }
 
     /**
@@ -90,6 +93,10 @@ class BarcodeGenerator
      */
     public function generate()
     {
+        if (func_num_args()) {
+            $this->init(func_get_args());
+        }
+
         $codeString = null;
 
         switch ($this->codeType) {
