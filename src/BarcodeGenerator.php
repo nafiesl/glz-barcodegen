@@ -94,7 +94,9 @@ class BarcodeGenerator
     public function generate()
     {
         if (func_num_args()) {
-            $this->init(func_get_args());
+            $args = func_get_args();
+            $args = is_array($args[0]) ? $args[0] : $args;
+            $this->init($args);
         }
 
         $codeString = null;

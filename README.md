@@ -10,7 +10,7 @@ It's designed for Laravel 5 and it can create PNG images or DATA-URL strings.
 Through Composer, obviously:
 
 ```
-composer require picoprime/barcodegen
+composer require picoprime/barcodegen:@dev
 ```
 
 or you can edit composer.json file and add `"picoprime/barcodegen": "@dev"` to your "require" section.
@@ -31,6 +31,13 @@ $this->barcode
     ->generate()
 ```
 
+or
+
+```
+$this->barcode
+    ->generate($text, $size, $orientation, $codeType)
+```
+
 where:
 
 * "text" is the text that you want to transform into barcode,
@@ -42,16 +49,14 @@ You can also pass these parameters as assoc or numeric array, like so:
 
 ```
 $this->barcode
-    ->init(compact('text', 'size', 'orientation', 'codeType'))
-    ->generate()
+    ->generate(compact('text', 'size', 'orientation', 'codeType'))
 ```
 
 or
 
 ```
 $this->barcode
-    ->init(['textToTransform', 50, 'horizontal', 'code128'])
-    ->generate()
+    ->generate(['textToTransform', 50, 'horizontal', 'code128'])
 ```
 
 Last step to generate image is to send whatever has been generated above to `->response('png')` or `->encode('data-url')`.
