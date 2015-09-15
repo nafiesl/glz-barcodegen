@@ -1,9 +1,10 @@
-# PicoPrime\BarcodeGenerator
+# Barcode Generator
 
 [![Author](https://secure.gravatar.com/avatar/074618e37f640d13d402830f61092d09?d=identicon&s=50)](https://twitter.com/raffw7912)
 
 Barcode Generator is a simple library that helps you create barcodes images.
 It's designed for Laravel 5 and it can create PNG images or DATA-URL strings.
+Based on great [php-generator](https://github.com/davidscotttufts/php-barcode) by [David Tufts](https://github.com/davidscotttufts)
 
 # Installation
 
@@ -15,7 +16,7 @@ composer require picoprime/barcodegen:@dev
 
 or you can edit composer.json file and add `"picoprime/barcodegen": "@dev"` to your "require" section.
 
-# Integrations
+# Setup
 
 Successfully tested in Laravel 5. Steps to make it work:
 
@@ -73,6 +74,8 @@ You can create routes as you like. Two examples that we usually use:
 Route::get('barcode/img/{text}/{size?}/{codeType?}/{orientation?}', 'BarcodeController@barcodeAsPng');
 Route::get('barcode/url/{text}/{size?}/{codeType?}/{orientation?}', 'BarcodeController@barcodeAsDataUrl');
 ```
+
+Please take a look at example route in `docs` folder.
 
 
 ### Frontend use

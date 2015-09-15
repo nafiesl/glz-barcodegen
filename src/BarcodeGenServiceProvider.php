@@ -9,7 +9,6 @@
  */
 namespace PicoPrime\BarcodeGen;
 
-use PicoPrime\BarcodeGen\BarcodeGenerator;
 use Illuminate\Support\ServiceProvider;
 
 class BarcodeGenServiceProvider extends ServiceProvider
