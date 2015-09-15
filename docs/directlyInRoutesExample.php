@@ -1,14 +1,14 @@
 <?php
 
 Route::get(
-    'barcode/img/{text}/{size?}/{codeType?}/{orientation?}', 
+    'barcode/img/{text}/{size?}/{scale?}/{codeType?}/{orientation?}',
     
-    function ($text, $size = 50, $codeType = 'code128', $orientation = 'horizontal') {
+    function ($text, $size = 50, $scale = 1, $codeType = 'code128', $orientation = 'horizontal') {
         
         $barcode = new \PicoPrime\BarcodeGen\BarcodeGenerator();
 
         return $barcode
-            ->generate(compact('text', 'size', 'orientation', 'codeType'))
+            ->generate(compact('text', 'size', 'orientation', 'codeType', 'scale'))
             ->response('png');
     }
 );

@@ -20,6 +20,7 @@ class BarcodeGenerator
     protected $size;
     protected $orientation;
     protected $codeType;
+    protected $scale;
 
     /**
      * Init basic params.
@@ -28,22 +29,27 @@ class BarcodeGenerator
      * @param int $size
      * @param string $orientation
      * @param string $codeType
+     * @param float $scale
+     * @return $this
      */
     public function init(
         $text = '',
         $size = 50,
         $orientation = 'horizontal',
-        $codeType = 'code128'
+        $codeType = 'code128',
+        $scale = 1
     ) {
+        $scale = floatval($scale);
         $this->image = new ImageManager();
 
         if (is_array($text)) {
-            $this->initFromArray($text, $size, $orientation, $codeType);
+            $this->initFromArray($text, (float) $size, $orientation, $codeType, $scale);
         } else {
             $this->text = $text;
-            $this->size = $size;
+            $this->size = (int) $size;
             $this->orientation = strtolower($orientation);
             $this->codeType = strtolower($codeType);
+            $this->scale = $scale;
         }
 
         return $this;
@@ -52,16 +58,18 @@ class BarcodeGenerator
     /**
      * Try to grab all required params from passed array.
      * @param array $data
-     * @param $size
-     * @param $orientation
-     * @param $codeType
+     * @param int $size
+     * @param string $orientation
+     * @param string $codeType
+     * @param float $scale
      */
-    protected function initFromArray(array $data, $size, $orientation, $codeType)
+    protected function initFromArray(array $data, $size, $orientation, $codeType, $scale)
     {
         $this->text = $this->extract(0, 'text', '', $data);
         $this->size = $this->extract(1, 'size', $size, $data);
         $this->orientation = strtolower($this->extract(2, 'orientation', $orientation, $data));
         $this->codeType = strtolower($this->extract(3, 'codeType', $codeType, $data));
+        $this->scale = $this->extract(4, 'scale', $scale, $data);
     }
 
     /**
@@ -70,7 +78,7 @@ class BarcodeGenerator
      *
      * @param int $intKey
      * @param string $textKey
-     * @param $default
+     * @param mixed $default
      * @param array $data
      * @return mixed
      */
@@ -135,7 +143,7 @@ class BarcodeGenerator
      */
     protected function generateImage($codeString)
     {
-        $location = 10;
+        $location = 10 * $this->scale;
         $codeLength = $this->setCodeLength($codeString);
         list($imgWidth, $imgHeight) = $this->setImageDimensions($codeLength);
 
@@ -143,7 +151,7 @@ class BarcodeGenerator
 
         for ($position = 1; $position <= strlen($codeString); $position++) {
 
-            $curSize = $location + (int)(substr($codeString, ($position - 1), 1));
+            $curSize = $location + (int)(substr($codeString, ($position - 1), 1)) * $this->scale;
             $color = ($position % 2 == 0 ? self::WHITE_COLOR : self::BLACK_COLOR);
             list($startX, $startY, $endX, $endY) = $this->setBlockSize($location, $curSize, $imgWidth, $imgHeight);
 
@@ -185,10 +193,10 @@ class BarcodeGenerator
     protected function setImageDimensions($codeLength)
     {
         if ($this->orientation === 'horizontal') {
-            return [$codeLength, $this->size];
+            return [$codeLength, $this->size * $this->scale];
         }
 
-        return [$this->size, $codeLength];
+        return [$this->size * $this->scale, $codeLength];
     }
 
     /**
@@ -205,6 +213,6 @@ class BarcodeGenerator
             $codeLength = $codeLength + (integer)(substr($codeString, ($i - 1), 1));
         }
 
-        return $codeLength;
+        return $codeLength * $this->scale;
     }
 }

@@ -28,7 +28,7 @@ Before you call `generate()` method you have to pass variables to `init()` like 
 
 ```
 $this->barcode
-    ->init($text, $size, $orientation, $codeType)
+    ->init($text, $size, $orientation, $codeType, $scale)
     ->generate()
 ```
 
@@ -36,28 +36,29 @@ or
 
 ```
 $this->barcode
-    ->generate($text, $size, $orientation, $codeType)
+    ->generate($text, $size, $orientation, $codeType, $scale)
 ```
 
 where:
 
 * "text" is the text that you want to transform into barcode,
-* "size" is barcode's height in pixels. If you need to change width in the frontend, then CSS is the best for it!
+* "size" is barcode's height in pixels. If you need to change width as well then use "scale" together with "size"!
 * "orientation" does what it says - changes barcode's orientation. Available: horizontal and vertical,
 * "codeType" is the type of code that you want to generate. Available: code128, code128a, code39, code25, codabar.
+* "scale" - if you need wider or just bigger barcode enter a number: 1 - default, 2 - 2x bigger, 2.5, ...
 
 You can also pass these parameters as assoc or numeric array, like so:
 
 ```
 $this->barcode
-    ->generate(compact('text', 'size', 'orientation', 'codeType'))
+    ->generate(compact('text', 'size', 'orientation', 'codeType', 'scale'))
 ```
 
 or
 
 ```
 $this->barcode
-    ->generate(['textToTransform', 50, 'horizontal', 'code128'])
+    ->generate(['textToTransform', 50, 'horizontal', 'code128', 1])
 ```
 
 Last step to generate image is to send whatever has been generated above to `->response('png')` or `->encode('data-url')`.
@@ -71,8 +72,8 @@ Please take a look at example controller in `docs` folder.
 You can create routes as you like. Two examples that we usually use:
 
 ```
-Route::get('barcode/img/{text}/{size?}/{codeType?}/{orientation?}', 'BarcodeController@barcodeAsPng');
-Route::get('barcode/url/{text}/{size?}/{codeType?}/{orientation?}', 'BarcodeController@barcodeAsDataUrl');
+Route::get('barcode/img/{text}/{size?}/{scale?}/{codeType?}/{orientation?}', 'BarcodeController@barcodeAsPng');
+Route::get('barcode/url/{text}/{size?}/{scale?}/{codeType?}/{orientation?}', 'BarcodeController@barcodeAsDataUrl');
 ```
 
 Please take a look at example route in `docs` folder.

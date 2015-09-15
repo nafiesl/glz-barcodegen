@@ -21,6 +21,7 @@ class BarcodeController extends Controller
      *
      * @param string $text
      * @param int $size
+     * @param float $scale
      * @param string $orientation
      * @param string $codeType
      * @return \Intervention\Image\Image
@@ -29,12 +30,12 @@ class BarcodeController extends Controller
     public function barcodeAsDataUrl(
         $text = '',
         $size = 50,
+        $scale = 1,
         $orientation = 'horizontal',
         $codeType = 'code128'
     ) {
         return $this->barcode
-            ->init($text, $size, $orientation, $codeType)
-            ->generate()
+            ->generate(compact('text', 'size', 'orientation', 'codeType', 'scale'))
             ->encode('data-url');
     }
 
@@ -43,6 +44,7 @@ class BarcodeController extends Controller
      *
      * @param string $text
      * @param int $size
+     * @param float $scale
      * @param string $orientation
      * @param string $codeType
      * @return mixed
@@ -51,12 +53,12 @@ class BarcodeController extends Controller
     public function barcodeAsPng(
         $text = '',
         $size = 50,
+        $scale = 1,
         $orientation = 'horizontal',
         $codeType = 'code128'
     ) {
         return $this->barcode
-            ->init($text, $size, $orientation, $codeType)
-            ->generate()
+            ->generate(compact('text', 'size', 'orientation', 'codeType', 'scale'))
             ->response('png');
     }
 }
