@@ -1,5 +1,5 @@
 {
-    "name": "picoprime/barcodegen",
+    "name": "glz/barcodegen",
     "description": "Generates barcodes images as PNG or DATA-URL",
     "keywords": [
         "barcode", "barcodes", "generator", 
